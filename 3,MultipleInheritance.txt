@@ -1,58 +1,102 @@
 #include <iostream>
 #include <string>
 using namespace std;
-class PersonalRecord {
+
+class Publication {
 protected:
-    string name;
-    int age;
+    string title;
+    float price;
+
 public:
-    void setPersonalRecord(string n, int a) {
-        name = n;
-        age = a;
+    void getData() {
+        cout << "\nEnter title: ";
+        cin.ignore();
+        getline(cin, title);
+        cout << "Enter price: ";
+        cin >> price;
     }
-    void displayPersonalRecord() {
-        cout << "Name: " << name << endl;
-        cout << "Age: " << age << endl;
-    }};
-class ProfessionalRecord {
-protected:
-    string designation;
-    double salary;
-public:
-    void setProfessionalRecord(string d, double s) {
-        designation = d;
-        salary = s;
+
+    void display() const {
+        cout << "\nTitle: " << title;
+        cout << "\nPrice: " << price;
     }
-    void displayProfessionalRecord() {
-        cout << "Designation: " << designation << endl;
-        cout << "Salary: " << salary << endl;
-    } };
-class AcademicRecord {
-protected:
-    string highestQualification;
-    double percentage;
+};
+
+class Book : public Publication {
+    int pageCount;
+
 public:
-    void setAcademicRecord(string hq, double p) {
-        highestQualification = hq;
-        percentage = p;
+    void getData() {
+        Publication::getData();
+        cout << "Enter number of pages: ";
+        cin >> pageCount;
+        if (pageCount <= 0) {
+            cout << "Invalid page count! Setting to 0.\n";
+            pageCount = 0;
+        }
     }
-    void displayAcademicRecord() {
-        cout << "Highest Qualification: " << highestQualification << endl;
-        cout << "Percentage: " << percentage << "%" << endl;
-    }  };
-class Employee : public PersonalRecord, public ProfessionalRecord, public AcademicRecord {
+
+    void display() const {
+        Publication::display();
+        cout << "\nPages: " << pageCount;
+    }
+};
+
+class Tape : public Publication {
+    float playTime;
+
 public:
-    void displayBioData() {
-        cout << "\nEmployee Bio-Data:\n";
-        displayPersonalRecord();
-        displayProfessionalRecord();
-        displayAcademicRecord();
-    }  };
+    void getData() {
+        Publication::getData();
+        cout << "Enter play time (in minutes): ";
+        cin >> playTime;
+        if (playTime <= 0) {
+            cout << "Invalid play time! Setting to 0.\n";
+            playTime = 0;
+        }
+    }
+
+    void display() const {
+        Publication::display();
+        cout << "\nPlay Time: " << playTime;
+    }
+};
+
 int main() {
-    Employee emp;
-    emp.setPersonalRecord("John Doe", 30);
-    emp.setProfessionalRecord("Software Engineer", 75000);
-    emp.setAcademicRecord("B.Tech in Computer Science", 85.5);
-    emp.displayBioData();
+    Book books[10];
+    Tape tapes[10];
+    int bookCount = 0, tapeCount = 0, choice;
+
+    do {
+        cout << "\nMenu:\n1. Add Book\n2. Add Tape\n3. Show Books\n4. Show Tapes\n5. Exit\nChoice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                books[bookCount++].getData();
+                break;
+            case 2:
+                tapes[tapeCount++].getData();
+                break;
+            case 3:
+                for (int i = 0; i < bookCount; i++) {
+                    cout << "\nBook " << i + 1 << ":";
+                    books[i].display();
+                }
+                break;
+            case 4:
+                for (int i = 0; i < tapeCount; i++) {
+                    cout << "\nTape " << i + 1 << ":";
+                    tapes[i].display();
+                }
+                break;
+            case 5:
+                cout << "Exiting program.\n";
+                break;
+            default:
+                cout << "Invalid choice. Try again.\n";
+        }
+    } while (choice != 5);
+
     return 0;
 }
