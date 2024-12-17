@@ -1,0 +1,78 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+class Point {
+public:
+    float x, y;
+
+    Point() : x(0), y(0) {}
+    Point(float x, float y) : x(x), y(y) {}
+
+    void display() {
+        cout << "(" << x << ", " << y << ")";
+    }
+
+    Point operator+(const Point &p) {
+        return Point(x + p.x, y + p.y);
+    }
+
+    Point operator*(const Point &scale) {
+        return Point(x * scale.x, y * scale.y);
+    }
+};
+
+class Triangle {
+public:
+    Point p1, p2, p3;
+
+    Triangle(Point a, Point b, Point c) : p1(a), p2(b), p3(c) {}
+
+    void display() {
+        cout << "Triangle vertices:\n";
+        p1.display(); cout << "\n";
+        p2.display(); cout << "\n";
+        p3.display(); cout << "\n";
+    }
+
+    void translate(Point translation) {
+        p1 = p1 + translation;
+        p2 = p2 + translation;
+        p3 = p3 + translation;
+    }
+
+    void scale(Point scaleFactor) {
+        p1 = p1 * scaleFactor;
+        p2 = p2 * scaleFactor;
+        p3 = p3 * scaleFactor;
+    }
+
+    void rotate(float angle) {
+        float rad = angle * (M_PI / 180.0);
+        p1 = Point(p1.x * cos(rad) - p1.y * sin(rad), p1.x * sin(rad) + p1.y * cos(rad));
+        p2 = Point(p2.x * cos(rad) - p2.y * sin(rad), p2.x * sin(rad) + p2.y * cos(rad));
+        p3 = Point(p3.x * cos(rad) - p3.y * sin(rad), p3.x * sin(rad) + p3.y * cos(rad));
+    }
+};
+
+int main() {
+    Point a(0, 0), b(4, 0), c(2, 3);
+    Triangle tri(a, b, c);
+
+    cout << "Original:\n";
+    tri.display();
+
+    cout << "\nAfter Translation (2, 3):\n";
+    tri.translate(Point(2, 3));
+    tri.display();
+
+    cout << "\nAfter Scaling (2, 2):\n";
+    tri.scale(Point(2, 2));
+    tri.display();
+
+    cout << "\nAfter Rotation (90 degrees):\n";
+    tri.rotate(90);
+    tri.display();
+
+    return 0;
+}
