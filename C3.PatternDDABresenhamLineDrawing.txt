@@ -1,0 +1,87 @@
+#include <graphics.h>
+#include <cmath>
+#include <iostream>
+using namespace std;
+
+void drawLineDDA(int x1, int y1, int x2, int y2) {
+    int dx = x2 - x1;
+    int dy = y2 - y1;
+    int steps = max(abs(dx), abs(dy));
+    float xInc = dx / (float)steps;
+    float yInc = dy / (float)steps;
+    float x = x1, y = y1;
+
+    for (int i = 0; i <= steps; i++) {
+        putpixel(round(x), round(y), WHITE);
+        x += xInc;
+        y += yInc;
+    }
+}
+
+void drawLineBresenham(int x1, int y1, int x2, int y2) {
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
+    int sx = (x2 > x1) ? 1 : -1;
+    int sy = (y2 > y1) ? 1 : -1;
+    int err = dx - dy;
+
+    while (true) {
+        putpixel(x1, y1, WHITE);
+        if (x1 == x2 && y1 == y2) break;
+        int e2 = 2 * err;
+        if (e2 > -dy) {
+            err -= dy;
+            x1 += sx;
+        }
+        if (e2 < dx) {
+            err += dx;
+            y1 += sy;
+        }
+    }
+}
+
+void drawCircle(int xc, int yc, int r) {
+    int x = 0, y = r;
+    int d = 3 - 2 * r;
+
+    while (y >= x) {
+        putpixel(xc + x, yc + y, WHITE);
+        putpixel(xc - x, yc + y, WHITE);
+        putpixel(xc + x, yc - y, WHITE);
+        putpixel(xc - x, yc - y, WHITE);
+        putpixel(xc + y, yc + x, WHITE);
+        putpixel(xc - y, yc + x, WHITE);
+        putpixel(xc + y, yc - x, WHITE);
+        putpixel(xc - y, yc - x, WHITE);
+        x++;
+        if (d > 0) {
+            y--;
+            d = d + 4 * (x - y) + 10;
+        } else {
+            d = d + 4 * x + 6;
+        }
+    }
+}
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, NULL);
+
+    int xc = 300, yc = 300, r = 150;
+
+    drawCircle(xc, yc, r);
+
+    int x1 = xc, y1 = yc - r;
+    int x2 = xc - r * 0.866, y2 = yc + r / 2;
+    int x3 = xc + r * 0.866, y3 = yc + r / 2;
+    drawLineDDA(x1, y1, x2, y2);
+    drawLineDDA(x2, y2, x3, y3);
+    drawLineDDA(x3, y3, x1, y1);
+
+    int rInner = r / 2;
+    drawCircle(xc, yc + rInner / 2, rInner);
+
+    getch();
+    closegraph();
+    return 0;
+}

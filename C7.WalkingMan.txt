@@ -1,0 +1,77 @@
+#include <SFML/Graphics.hpp>
+#include <iostream>
+
+using namespace sf;
+
+class WalkingMan {
+public:
+    void draw(RenderWindow& window, float posX);
+};
+
+void WalkingMan::draw(RenderWindow& window, float posX) {
+    RectangleShape platform(Vector2f(600, 20));
+    platform.setPosition(0, 380);
+    platform.setFillColor(Color::Green);
+    window.draw(platform);
+
+    RectangleShape body(Vector2f(10, 40));
+    body.setPosition(posX, 340);
+    body.setFillColor(Color::Red);
+    window.draw(body);
+
+    CircleShape head(10);
+    head.setPosition(posX - 10, 300);
+    head.setFillColor(Color::Yellow);
+    window.draw(head);
+
+    if (static_cast<int>(posX) % 2 == 0) {
+        Vertex leg1[] = {
+            Vertex(Vector2f(posX + 5, 380)),
+            Vertex(Vector2f(posX - 10, 340))
+        };
+        window.draw(leg1, 2, Lines);
+
+        Vertex leg2[] = {
+            Vertex(Vector2f(posX + 5, 380)),
+            Vertex(Vector2f(posX + 20, 340))
+        };
+        window.draw(leg2, 2, Lines);
+    }
+
+    RectangleShape umbrellaStick(Vector2f(5, 40));
+    umbrellaStick.setPosition(posX + 5, 280);
+    umbrellaStick.setFillColor(Color::Black);
+    window.draw(umbrellaStick);
+
+    CircleShape umbrellaTop(35, 180);
+    umbrellaTop.setPosition(posX - 30, 245);
+    umbrellaTop.setFillColor(Color(0, 0, 255, 100));
+    window.draw(umbrellaTop);
+}
+
+int main() {
+    RenderWindow window(VideoMode(600, 400), "Walking Man");
+
+    WalkingMan man;
+    float posX = 0.0f;
+
+    while (window.isOpen()) {
+        Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == Event::Closed)
+                window.close();
+        }
+
+        window.clear();
+
+        man.draw(window, posX);
+
+        posX += 5;
+        if (posX > 600) posX = -50;
+
+        window.display();
+        sleep(milliseconds(100));
+    }
+
+    return 0;
+}
