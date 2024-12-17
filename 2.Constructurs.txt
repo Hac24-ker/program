@@ -1,0 +1,59 @@
+#include <iostream>
+#include <string>
+using namespace std;
+class Student {
+private:
+    string name, studentClass, dob, bloodGroup, address, phone, licenseNo;
+    int rollNo;
+    char division;
+public:
+    static int studentCount;  
+       Student() : name("Unknown"), rollNo(0), studentClass("None"), division('A'),
+               dob("01/01/2000"), bloodGroup("O+"), address("Unknown"), 
+               phone("0000000000"), licenseNo("None") {
+        studentCount++;
+    }
+     Student(string n, int r, string cls, char div, string d, string bg, string addr, string ph, string lic) 
+        : name(n), rollNo(r), studentClass(cls), division(div), dob(d), bloodGroup(bg),
+          address(addr), phone(ph), licenseNo(lic) {
+        studentCount++;
+    }
+     Student(const Student& s) {
+        name = s.name; rollNo = s.rollNo; studentClass = s.studentClass;
+        division = s.division; dob = s.dob; bloodGroup = s.bloodGroup;
+        address = s.address; phone = s.phone; licenseNo = s.licenseNo;
+        studentCount++;
+    }
+     ~Student() { studentCount--; }
+    void display() const {
+        cout << "Name: " << name << endl << "Roll No: " << rollNo << endl 
+             << "Class: " << studentClass << endl << "Division: " << division << endl
+             << "DOB: " << dob << endl << "Blood Group: " << bloodGroup << endl
+             << "Address: " << address << endl << "Phone: " << phone << endl
+             << "License No: " << licenseNo << endl;
+    }
+      friend class Admin;
+    void updateAddress(string newAddress) { address = newAddress; }
+    static int getStudentCount() { return studentCount; }
+};
+int Student::studentCount = 0;
+class Admin {
+public:    
+    void updatePhone(Student& s, string newPhone) {
+        s.phone = newPhone;
+    }};
+int main() {   
+    Student* s1 = new Student("John", 1, "10th", 'A', "01/01/2005", "A+", "123 Street", "9876543210", "DL12345"); 
+    s1->display();    
+    s1->updateAddress("456 Avenue");
+    cout << "\nAfter updating address:" << endl;
+    s1->display();  
+    Admin admin;
+    admin.updatePhone(*s1, "1234567890");
+    cout << "\nAfter updating phone using Admin:" << endl;
+    s1->display();      
+    cout << "\nTotal Students: " << Student::getStudentCount() << endl;
+    delete s1;
+    cout << "Total Students after deletion: " << Student::getStudentCount() << endl;
+    return 0;
+}

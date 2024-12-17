@@ -1,0 +1,58 @@
+#include <iostream>
+#include <string>
+using namespace std;
+class PersonalRecord {
+protected:
+    string name;
+    int age;
+public:
+    void setPersonalRecord(string n, int a) {
+        name = n;
+        age = a;
+    }
+    void displayPersonalRecord() {
+        cout << "Name: " << name << endl;
+        cout << "Age: " << age << endl;
+    }};
+class ProfessionalRecord {
+protected:
+    string designation;
+    double salary;
+public:
+    void setProfessionalRecord(string d, double s) {
+        designation = d;
+        salary = s;
+    }
+    void displayProfessionalRecord() {
+        cout << "Designation: " << designation << endl;
+        cout << "Salary: " << salary << endl;
+    } };
+class AcademicRecord {
+protected:
+    string highestQualification;
+    double percentage;
+public:
+    void setAcademicRecord(string hq, double p) {
+        highestQualification = hq;
+        percentage = p;
+    }
+    void displayAcademicRecord() {
+        cout << "Highest Qualification: " << highestQualification << endl;
+        cout << "Percentage: " << percentage << "%" << endl;
+    }  };
+class Employee : public PersonalRecord, public ProfessionalRecord, public AcademicRecord {
+public:
+    void displayBioData() {
+        cout << "\nEmployee Bio-Data:\n";
+        displayPersonalRecord();
+        displayProfessionalRecord();
+        displayAcademicRecord();
+    }  };
+int main() {
+    Employee emp;
+    emp.setPersonalRecord("John Doe", 30);
+    emp.setProfessionalRecord("Software Engineer", 75000);
+    emp.setAcademicRecord("B.Tech in Computer Science", 85.5);
+    emp.displayBioData();
+    return 0;
+}

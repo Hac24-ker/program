@@ -1,0 +1,32 @@
+#include <iostream>
+#include <map>
+#include <string>
+using namespace std;
+int main() {
+    map<string, int> statePopulation;
+    string state;
+    int population;
+    int n;
+    cout << "Enter the number of states: ";
+    cin >> n;
+    cin.ignore();
+    for (int i = 0; i < n; ++i) {
+        cout << "Enter state name: ";
+        getline(cin, state);
+        cout << "Enter population of " << state << ": ";
+        cin >> population;
+        cin.ignore();
+        statePopulation[state] = population;
+    }
+    cout << "Enter the name of a state to search: ";
+    getline(cin, state);
+
+    auto it = statePopulation.find(state);
+
+    if (it != statePopulation.end()) {
+        cout << "The population of " << state << " is " << it->second << endl;
+    } else {
+        cout << "State not found!" << endl;
+    }
+    return 0;
+}

@@ -1,0 +1,105 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+class FileHandler {
+private:
+    string fileName;
+public:
+    FileHandler(string name) {
+        fileName = name;
+    }
+    void writeToFile() {
+        ofstream outFile(fileName);
+        if (!outFile) {
+            cout << "Error opening file for writing." << endl;
+            return;
+        }
+        string userInput;
+        cout << "Enter some text (type 'STOP' to end input):" << endl;
+        while (true) {
+            getline(cin, userInput);
+            if (userInput == "STOP") {
+                break;
+            }
+            outFile << userInput << endl;
+        }
+        outFile.close();
+        cout << "Data successfully written to file!" << endl;
+    }
+    void readFromFile() {
+        ifstream inFile(fileName);
+
+        if (!inFile) {
+            cout << "Error opening file for reading." << endl;
+            return;
+        }
+        string fileContent;
+        cout << "\nContent of the file:\n";    
+        while (getline(inFile, fileContent)) {
+            cout << fileContent << endl;
+        }
+        inFile.close();
+    } };
+int main() {
+    string fileName;
+    cout << "Enter the name of the file: ";
+    cin >> fileName;
+    cin.ignore();
+    FileHandler fileHandler(fileName);
+    fileHandler.writeToFile();
+    fileHandler.readFromFile();
+    return 0;
+}#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+class FileHandler {
+private:
+    string fileName;
+public:
+    FileHandler(string name) {
+        fileName = name;
+    }
+    void writeToFile() {
+        ofstream outFile(fileName);
+        if (!outFile) {
+            cout << "Error opening file for writing." << endl;
+            return;
+        }
+        string userInput;
+        cout << "Enter some text (type 'STOP' to end input):" << endl;
+        while (true) {
+            getline(cin, userInput);
+            if (userInput == "STOP") {
+                break;
+            }
+            outFile << userInput << endl;
+        }
+        outFile.close();
+        cout << "Data successfully written to file!" << endl;
+    }
+    void readFromFile() {
+        ifstream inFile(fileName);
+
+        if (!inFile) {
+            cout << "Error opening file for reading." << endl;
+            return;
+        }
+        string fileContent;
+        cout << "\nContent of the file:\n";    
+        while (getline(inFile, fileContent)) {
+            cout << fileContent << endl;
+        }
+        inFile.close();
+    } };
+int main() {
+    string fileName;
+    cout << "Enter the name of the file: ";
+    cin >> fileName;
+    cin.ignore();
+    FileHandler fileHandler(fileName);
+    fileHandler.writeToFile();
+    fileHandler.readFromFile();
+    return 0;
+}

@@ -1,0 +1,70 @@
+#include <iostream>
+using namespace std;
+
+class Complex {
+private:
+    double real;
+    double imag;
+public:
+    Complex(double r = 0, double i = 0) {
+        real = r;
+        imag = i;
+    }
+    Complex operator+(const Complex& other) {
+        return Complex(real + other.real, imag + other.imag);
+    }
+    Complex operator*(const Complex& other) {
+        double realPart = real * other.real - imag * other.imag;
+        double imagPart = real * other.imag + imag * other.real;
+        return Complex(realPart, imagPart);
+    }
+    friend ostream& operator<<(ostream& out, const Complex& c) {
+        if (c.imag >= 0)
+            out << c.real << " + " << c.imag << "i";
+        else
+            out << c.real << " - " << -c.imag << "i";
+        return out;
+    }
+    friend istream& operator>>(istream& in, Complex& c) {
+        cout << "Enter real part: ";
+        in >> c.real;
+        cout << "Enter imaginary part: ";
+        in >> c.imag;
+        return in;
+    }
+};
+int main() {
+    Complex a, b;
+    int choice;
+    cout << "Enter first complex number:" << endl;
+    cin >> a;
+    cout << "Enter second complex number:" << endl;
+    cin >> b;
+    cout << "\nChoose an operation:" << endl;
+    cout << "1. Addition (+)" << endl;
+    cout << "2. Multiplication (*)" << endl;
+    cout << "3. Display first complex number using << operator" << endl;
+    cout << "4. Display second complex number using >> operator" << endl;
+    cout << "Enter your choice (1-4): ";
+    cin >> choice;
+    switch(choice) {
+        case 1:
+            cout << "Sum: " << a + b << endl;
+            break;
+        case 2:
+            cout << "Product: " << a * b << endl;
+            break;
+        case 3:
+            cout << "Using << operator, first complex number: " << a << endl;
+            break;
+        case 4:
+            cout << "Using >> operator, enter new second complex number:" << endl;
+            cin >> b;
+            cout << "New second complex number: " << b << endl;
+            break;
+        default:
+            cout << "Invalid choice!" << endl;
+            break;
+    }
+    return 0;
+}

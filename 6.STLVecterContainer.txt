@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+using namespace std;
+struct Person {
+    string name;
+    string dob;
+    string phone;
+    Person(string n, string d, string p) : name(n), dob(d), phone(p) {}
+};
+struct Item {
+    int itemCode;
+    string name;
+    double cost;
+    int quantity;
+    Item(int code, string n, double c, int q) : itemCode(code), name(n), cost(c), quantity(q) {}
+};
+bool compareByName(const Person &p1, const Person &p2) {
+    return p1.name < p2.name;
+}
+bool compareByCost(const Item &i1, const Item &i2) {
+    return i1.cost < i2.cost;
+}
+int main() {
+    vector<Person> persons = {
+        Person("Alice", "12-03-1995", "+911234567890"),
+        Person("Bob", "24-07-1992", "+912345678901"),
+        Person("Charlie", "15-11-1990", "+913456789012")
+    };
+    vector<Item> items = {
+        Item(101, "Laptop", 1000.50, 5),
+        Item(102, "Smartphone", 500.25, 10),
+        Item(103, "Headphones", 150.75, 15)
+    };
+    sort(persons.begin(), persons.end(), compareByName);
+    sort(items.begin(), items.end(), compareByCost);
+    cout << "Persons sorted by name:\n";
+    for (const auto& p : persons) {
+        cout << p.name << " - " << p.dob << " - " << p.phone << endl;
+    }
+    cout << "\nItems sorted by cost:\n";
+    for (const auto& i : items) {
+        cout << i.itemCode << " - " << i.name << " - $" << i.cost << " - Quantity: " << i.quantity << endl;
+    }
+    string searchName = "Bob";
+    auto it = find_if(persons.begin(), persons.end(), [&](const Person &p) { return p.name == searchName; });
+    if (it != persons.end()) {
+        cout << "\nFound person: " << it->name << " - " << it->dob << " - " << it->phone << endl;
+    } else {
+        cout << "\nPerson not found.\n";
+    }
+    int searchCode = 102;
+    auto itItem = find_if(items.begin(), items.end(), [&](const Item &i) { return i.itemCode == searchCode; });
+    if (itItem != items.end()) {
+        cout << "\nFound item: " << itItem->itemCode << " - " << itItem->name << " - $" << itItem->cost << " - Quantity: " << itItem->quantity << endl;
+    } else {
+        cout << "\nItem not found.\n";
+    }
+    return 0;
+}
