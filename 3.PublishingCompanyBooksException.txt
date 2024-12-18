@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <string>
 using namespace std;
@@ -8,95 +9,101 @@ protected:
     float price;
 
 public:
+    Publication() : title(""), price(0.0f) {}
+
     void getData() {
-        cout << "\nEnter title: ";
+        cout << "Enter title: ";
         cin.ignore();
         getline(cin, title);
         cout << "Enter price: ";
         cin >> price;
+        if (price < 0) {
+            throw "Price cannot be negative.";
+        }
     }
 
-    void display() const {
-        cout << "\nTitle: " << title;
-        cout << "\nPrice: " << price;
+    void displayData() const {
+        cout << "Title: " << title << endl;
+        cout << "Price: $" << price << endl;
+    }
+
+    void reset() {
+        title = "";
+        price = 0.0f;
     }
 };
 
 class Book : public Publication {
+private:
     int pageCount;
 
 public:
+    Book() : pageCount(0) {}
+
     void getData() {
-        Publication::getData();
-        cout << "Enter number of pages: ";
-        cin >> pageCount;
-        if (pageCount <= 0) {
-            cout << "Invalid page count! Setting to 0.\n";
+        try {
+            Publication::getData();
+            cout << "Enter page count: ";
+            cin >> pageCount;
+            if (pageCount < 0) {
+                throw "Page count cannot be negative.";
+            }
+        } catch (...) {
+            reset();
             pageCount = 0;
+            cout << "Invalid input. Data reset.\n";
         }
     }
 
-    void display() const {
-        Publication::display();
-        cout << "\nPages: " << pageCount;
+    void displayData() const {
+        Publication::displayData();
+        cout << "Page Count: " << pageCount << endl;
     }
 };
 
 class Tape : public Publication {
+private:
     float playTime;
 
 public:
+    Tape() : playTime(0.0f) {}
+
     void getData() {
-        Publication::getData();
-        cout << "Enter play time (in minutes): ";
-        cin >> playTime;
-        if (playTime <= 0) {
-            cout << "Invalid play time! Setting to 0.\n";
-            playTime = 0;
+        try {
+            Publication::getData();
+            cout << "Enter playing time (minutes): ";
+            cin >> playTime;
+            if (playTime < 0) {
+                throw "Playing time cannot be negative.";
+            }
+        } catch (...) {
+            reset();
+            playTime = 0.0f;
+            cout << "Invalid input. Data reset.\n";
         }
     }
 
-    void display() const {
-        Publication::display();
-        cout << "\nPlay Time: " << playTime;
+    void displayData() const {
+        Publication::displayData();
+        cout << "Playing Time: " << playTime << " minutes\n";
     }
 };
 
 int main() {
-    Book books[10];
-    Tape tapes[10];
-    int bookCount = 0, tapeCount = 0, choice;
+    Book myBook;
+    Tape myTape;
 
-    do {
-        cout << "\nMenu:\n1. Add Book\n2. Add Tape\n3. Show Books\n4. Show Tapes\n5. Exit\nChoice: ";
-        cin >> choice;
+    cout << "Enter details for the book:\n";
+    myBook.getData();
 
-        switch (choice) {
-            case 1:
-                books[bookCount++].getData();
-                break;
-            case 2:
-                tapes[tapeCount++].getData();
-                break;
-            case 3:
-                for (int i = 0; i < bookCount; i++) {
-                    cout << "\nBook " << i + 1 << ":";
-                    books[i].display();
-                }
-                break;
-            case 4:
-                for (int i = 0; i < tapeCount; i++) {
-                    cout << "\nTape " << i + 1 << ":";
-                    tapes[i].display();
-                }
-                break;
-            case 5:
-                cout << "Exiting program.\n";
-                break;
-            default:
-                cout << "Invalid choice. Try again.\n";
-        }
-    } while (choice != 5);
+    cout << "\nEnter details for the tape:\n";
+    myTape.getData();
+
+    cout << "\nDisplaying book details:\n";
+    myBook.displayData();
+
+    cout << "\nDisplaying tape details:\n";
+    myTape.displayData();
 
     return 0;
 }
